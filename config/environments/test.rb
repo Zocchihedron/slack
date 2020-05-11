@@ -4,4 +4,6 @@ Jets.application.configure do
   # ActionMailer::Base.deliveries array.
   # Docs: http://rubyonjets.com/docs/email-sending/
   config.action_mailer.delivery_method = :test
+  config.controllers.default_protect_from_forgery = false
+  config.table_namespace = decks
 end
