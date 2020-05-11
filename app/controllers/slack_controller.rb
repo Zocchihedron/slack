@@ -5,13 +5,11 @@ class SlackController < ApplicationController
   
   def post
 
-  	command = params[:command]
-
-  	case command
-  	when "/shuffle"
+  	case @command
+  	when "shuffle"
   		@deck.shuffle
   		@result = "Shuffled!"
-  	when "/deal"
+  	when "deal"
   		card = @deck.dealOneCard
   		@result = "#{card["rank"]} #{card["suit"]}"
   	end
@@ -22,8 +20,11 @@ class SlackController < ApplicationController
   private
 
   def set_deck
-  	unique_deck_id = params[:team_id] + "::" + params[:channel_id] 
+  	#request_data = Rack::Utils.parse_nested_query(params["body"])
+  	request_data = params
+  	unique_deck_id = request_data["team_id"] + "::" + request_data["channel_id"] 
     @deck = Deck.find_by_id(unique_deck_id)
+    @command = request_data["text"]
   end
 
 end
